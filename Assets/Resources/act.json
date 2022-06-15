@@ -1,0 +1,22 @@
+{
+  "act": 
+  {
+    "actId" : "0000",
+    "dialogs":
+    [
+      {
+        "messages":[
+          {
+            "messageId" : "0000",
+            "object" : "name_object",
+            "text": "first text"
+          },
+          {
+            "messageId" : "0001",
+            "object" : "name_object",
+            "text": "first text"
+          }]
+      }
+    ]
+  }
+}
