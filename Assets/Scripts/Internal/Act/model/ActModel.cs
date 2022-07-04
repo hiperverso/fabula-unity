@@ -1,3 +1,4 @@
+#region LICENSE INFO
 /// <summary>
 /// Author: Vinícius Bruno da Costa
 //Copyright(c) 2022, Hiperverso
@@ -24,15 +25,27 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /// </summary>
 ///
+#endregion
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-using Internal.Baseact.implementation;
 
-namespace act.model
+namespace act.model 
 {
     [CreateAssetMenu(fileName = "Act", menuName = "Fabula/Act Data", order = 0)]
-    public class ActModel : BaseAct
+    public class ActModel : ScriptableObject
     {
-        //Load values
-        public TextAsset[] actFiles;
+        public int actID;
+        public string language;
+        public List<Message> dialogs;
+    }
+
+
+    [Serializable]
+    public struct Message
+    {
+        public int messageId;
+        public string name_object;
+        public string text;
     }
 }

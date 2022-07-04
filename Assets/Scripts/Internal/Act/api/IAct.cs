@@ -24,18 +24,24 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /// </summary>
 ///
+using System;
+using act.model;
 
 namespace Internal.Baseact.api
 {
     public interface IAct
     {
-        public void Load();
-        public void Unload();
-        public void NextAct();
-        public void PreviousMessage();
-        public void NextMessage();
+        public StateType CurrentState { get; set; }
+        public Message? PreviousMessage();
+        public Message? NextMessage();
 
-        public delegate void OnActStart();
-        public delegate bool OnActFinished();
+        public Action OnActStart { get; set; }
+        public Action OnActStarted { get; set; }
+        public Action OnActLoad { get; set; }
+        public Action OnActLoaded { get; set; }
+        public Action OnAct { get; set; }
+        public Action OnActFinished { get; set; }
+        public Action OnActUnload { get; set; }
+        public Action OnActUnloaded { get; set; }
     }
 }

@@ -27,6 +27,7 @@
 {
     "act": {
         "actId": "0000",
+        "language": "PT-BR",
         "dialogs": [
             {
                 "messages": [

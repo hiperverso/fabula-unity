@@ -25,19 +25,40 @@
 /// </summary>
 /// 
 
+using System;
 using UnityEngine;
 
-public class NewMonoBehaviour : MonoBehaviour
+
+namespace JsonHandler
 {
-    // Use this for initialization
-    void Start()
+    public class JsonUtils
     {
+        public static T ReadFile<T>(TextAsset textAsset)
+        {
+            if (textAsset != null)
+            {
+                return JsonUtility.FromJson<T>(textAsset.text);
+            }
+            return default;
+        }
 
+        public static T ReadFileByResource<T>(string path)
+        {
+            TextAsset textAsset = null;
+            try
+            {
+                if (path != null)
+                {
+                    textAsset = Resources.Load<TextAsset>(path);
+                }
+            }
+            catch (Exception _e)
+            {
+                Debug.Log("[JSON] Exception: " + _e);
+            }
+
+            return ReadFile<T>(textAsset);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
