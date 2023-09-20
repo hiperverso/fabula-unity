@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 using fabula.modules.csv.impl.services.csvreader;
@@ -10,43 +11,60 @@ namespace fabula.modules.csv.impl.services.languagedata
         private readonly string k_generalPath = Application.dataPath + "/Resources/FabulaKeyValues.csv";
 
         private Dictionary<string, List<string>> m_Keys;
+        private List<string> m_HeaderTitles;
 
-        [SerializeField] private List<LanguageKeyData> m_LanguagesKeyList = new List<LanguageKeyData>();
+        private string currentLanguage = "";
+        private int currentLanguageIndex = 0;
 
         private void Start()
         {
-            if(m_Keys == null)
-                m_Keys = CsvReader.GetKeyValues(k_generalPath, "keys");
-
-
-
-            foreach (string _key in m_Keys.Keys)
-            {
-                Debug.Log("Data from CSV: " + _key.ToString());
-            }
+            Initialize();
         }
 
-        private void StoragedValues(string[] values)
+        public void Initialize()
         {
             if (m_Keys == null)
-                m_Keys = new Dictionary<string, List<string>>();
+                m_Keys = CsvReader.GetKeyValues(k_generalPath, "keys");
 
-            string _key = values[0];
-            List<string> valueFromKey;
-
-            if (!m_Keys.TryGetValue(_key, out valueFromKey))
+            if (m_HeaderTitles == null)
             {
-                if (valueFromKey != null)
+                m_HeaderTitles = new List<string>();
+                foreach (string title in CsvReader.GetHeaderInfo(k_generalPath))
                 {
-                    for (int _indexInValues = 1; _indexInValues < values.Length; _indexInValues++)
-                    {
-                        string returnedText = values[_indexInValues];
-                        valueFromKey.Add(returnedText);
-                    }
-
-                    m_Keys.Add(_key, valueFromKey);
+                    m_HeaderTitles.Add(title);
                 }
             }
+
+            SetLanguage("pt-br");
+
         }
+
+        public void SetLanguage(string _language)
+        {
+            if(m_HeaderTitles != null)
+            {
+                int languageIndex = -1;
+                foreach (string language in m_HeaderTitles)
+                {
+                    if (_language == language)
+                    {
+                        currentLanguage = _language;
+                        currentLanguageIndex = languageIndex;
+                    }
+
+                    languageIndex++;
+                }
+            }
+
+            if (currentLanguageIndex == -1)
+                Debug.Log("Languade ID "  + _language + " not found.");
+        }
+
+        public string GetSentenceByKey(string _key, int _keyIndex)
+        {
+            return m_Keys.ContainsKey(_key) ? m_Keys[_key][_keyIndex] : null;
+        }
+
+        public string GetCurrentLanguage() => currentLanguage;
     }
 }
